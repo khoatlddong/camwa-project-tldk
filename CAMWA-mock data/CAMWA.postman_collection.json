@@ -1,0 +1,1688 @@
+{
+	"info": {
+		"_postman_id": "3cea9cd7-d915-4614-975e-4b7ca123bba3",
+		"name": "CAMWA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36288820"
+	},
+	"item": [
+		{
+			"name": "Attendance",
+			"item": [
+				{
+					"name": "Create Attendance list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJBRE1JTjAwMSIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiQURNSU4iLCJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzUwMDM2Mjc0LCJleHAiOjE3NTAwMzk4NzR9.djSsJ9bDZOzBzitc6b-cFgs6c9DcsOBWk4w9R73vCQQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/lcnguyen/OneDrive - student.vgu.edu.vn/Desktop/Camwa-data/FA - Create Attendance List.csv"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/attendance/create-from-csv",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"attendance",
+								"create-from-csv"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create attendance",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJBRE1JTjAwMSIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiQURNSU4iLCJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzUwMDM2Mjc0LCJleHAiOjE3NTAwMzk4NzR9.djSsJ9bDZOzBzitc6b-cFgs6c9DcsOBWk4w9R73vCQQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"student_id\":\"10421001\",\r\n    \"module_id\":\"TCS\",\r\n    \"attendance_status\":\"absent\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/attendance/create",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"attendance",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update attendance",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJBRE1JTjAwMSIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiQURNSU4iLCJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzUwMjA1MDcyLCJleHAiOjE3NTAyMDg2NzJ9.gGiWToRNu8b2MlLEENwUdd2A68jmqUWkntTtZXCXrCA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"attendance_id\": 7,\r\n    \"student_id\":\"10421001\",\r\n    \"module_id\":\"TCS\",\r\n    \"attendance_status\":\"absent\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/attendance/7",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"attendance",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Request attendance correction",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIxMDQyMTAwMSIsImVtYWlsIjoiMTA0MjEwMDFAc3R1ZGVudC52Z3UuZWR1LnZuIiwicm9sZSI6IlNUVURFTlQiLCJ1c2VybmFtZSI6IjEwNDIxMDAxIiwiaWF0IjoxNzUwMjA3MzI4LCJleHAiOjE3NTAyMTA5Mjh9.h2SnJPHEA48ecyQB7hNi2dW0HDM_MkpN2ox3fbg_FJI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"attendance_id\": 7,\r\n    \"student_id\":\"10421001\",\r\n    \"module_id\":\"TCS\",\r\n    \"proposed_status\":\"present\",\r\n    \"reason\":\"I was in the class at 10 a.m\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/attendance/request-correction",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"attendance",
+								"request-correction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Correct attendance",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJGQUMwMDEiLCJlbWFpbCI6ImZhY3VsdHkxQGV4YW1wbGUuY29tIiwicm9sZSI6IkZBQ1VMVFkiLCJ1c2VybmFtZSI6ImZhY3VsdHkxIiwiaWF0IjoxNzUwMjg5NTM5LCJleHAiOjE3NTAyOTMxMzl9.64qiPy-YaPbrN8-pBOihpZxMlLoaI69BYqklehGR_zg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"approved_status\":\"absent\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/attendance/correction/13",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"attendance",
+								"correction",
+								"13"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Admin",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"admin@example.com\",\r\n    \"password\":\"admin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lecturer1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"lecturer1@example.com\",\r\n    \"password\":\"lecturer123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Faculty1",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"faculty1@example.com\",\r\n    \"password\":\"faculty123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Student001",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"10421001@student.vgu.edu.vn\",\r\n    \"password\":\"10421001\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Student005",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"10421005@student.vgu.edu.vn\",\r\n    \"password\":\"10421005\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Student003",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"10421003@student.vgu.edu.vn\",\r\n    \"password\":\"10421003\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ngocth",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"ngoc.th@vgu.edu.vn\",\r\n    \"password\":\"ngocth\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sonll",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"son.ll@vgu.edu.vn\",\r\n    \"password\":\"sonll\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Toggle AC role",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJzb25sbCIsImVtYWlsIjoic29uLmxsQHZndS5lZHUudm4iLCJyb2xlIjoiTEVDVFVSRVIiLCJ1c2VybmFtZSI6InNvbmxsIiwiaWF0IjoxNzUwODE0NTYyLCJleHAiOjE3NTA4MTgxNjJ9.qV9LFWmVZZe0lq2tlL08wFopPc6cadaCFf1bLV7JTJw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:3000/api/auth/toggle-ac-role",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"toggle-ac-role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify role",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJzb25sbCIsImVtYWlsIjoic29uLmxsQHZndS5lZHUudm4iLCJyb2xlIjoiQUMiLCJ1c2VybmFtZSI6InNvbmxsIiwiaWF0IjoxNzUwNzI1MTAxLCJleHAiOjE3NTA3Mjg3MDF9.grdjjYqInapghMeFsoVYLeVDeqGntWeFabMktLq0QXM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"son.ll@vgu.edu.vn\",\r\n    \"password\":\"sonll\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/auth/verify-role",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"verify-role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJzb25sbCIsImVtYWlsIjoic29uLmxsQHZndS5lZHUudm4iLCJyb2xlIjoiQUMiLCJ1c2VybmFtZSI6InNvbmxsIiwiaWF0IjoxNzUwODE0NjA5LCJleHAiOjE3NTA4MTgyMDl9.gwKNhe-fQTavd35D_g1rqNEtYvsHX02ehVnkzeccE7Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/auth/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIxMDQyMTA0MyIsImVtYWlsIjoiMTA0MjEwNDNAc3R1ZGVudC52Z3UuZWR1LnZuIiwicHVycG9zZSI6InBhc3N3b3JkX3Jlc2V0IiwidGltZXN0YW1wIjoxNzUxODU0MjAyNTYwLCJpYXQiOjE3NTE4NTQyMDIsImV4cCI6MTc1MTg1NDUwMn0.wyyvZHB4jmXU2tqs1B3TlpO4D-bD5d4BsEhQOUSlpoQ\",\r\n    \"newPassword\": \"10421043new\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/reset-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Request reset password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"10421043@student.vgu.edu.vn\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/request-password-reset",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"request-password-reset"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Create list student account",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJBRE1JTjAwMSIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiQURNSU4iLCJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzUxMjQxMTY2LCJleHAiOjE3NTEyNDQ3NjZ9.GbaDNo01iVvpIrXOAopR5ywsy84iGxCsIGdgmq_-GW0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/lcnguyen/OneDrive - student.vgu.edu.vn/Desktop/Camwa-data/xlsx file/Admin - Create Student Account List.xlsx"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/account/create-students-from-excel",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"account",
+								"create-students-from-excel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create list lecturer account",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJBRE1JTjAwMSIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiQURNSU4iLCJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzUxMjQxMTY2LCJleHAiOjE3NTEyNDQ3NjZ9.GbaDNo01iVvpIrXOAopR5ywsy84iGxCsIGdgmq_-GW0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/lcnguyen/OneDrive - student.vgu.edu.vn/Desktop/Camwa-data/xlsx file/Admin - Create Lecturer Account List.xlsx"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/account/create-lecturers-from-excel",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"account",
+								"create-lecturers-from-excel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJuZ29jdGgiLCJlbWFpbCI6Im5nb2MudGhAdmd1LmVkdS52biIsInJvbGUiOiJMRUNUVVJFUiIsInVzZXJuYW1lIjoibmdvY3RoIiwiaWF0IjoxNzUxMjQzNzE4LCJleHAiOjE3NTEyNDczMTh9.eM_w8rhBAoK9LhEGC0sd2QjMqlm5_cQt638IkCPVZts",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currentPassword\":\"ngocth\",\r\n    \"newPassword\":\"lecturer123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/account/ngocth/change-password",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"account",
+								"ngocth",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dashboard",
+			"item": [
+				{
+					"name": "Student - #attendance rate - all module",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIxMDQyMTAwMyIsImVtYWlsIjoiMTA0MjEwMDNAc3R1ZGVudC52Z3UuZWR1LnZuIiwicm9sZSI6IlNUVURFTlQiLCJ1c2VybmFtZSI6IjEwNDIxMDAzIiwiaWF0IjoxNzUwNjMwMTgyLCJleHAiOjE3NTA2MzM3ODJ9.uVLp5cpb5wOyOUvFQ5fTscE7ABl4hShsT608XQBWs4I",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/student/10421003/modules-with-attendance",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"student",
+								"10421003",
+								"modules-with-attendance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Student - exam eligibility - all module",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIxMDQyMTAwMyIsImVtYWlsIjoiMTA0MjEwMDNAc3R1ZGVudC52Z3UuZWR1LnZuIiwicm9sZSI6IlNUVURFTlQiLCJ1c2VybmFtZSI6IjEwNDIxMDAzIiwiaWF0IjoxNzUwNjMwMTgyLCJleHAiOjE3NTA2MzM3ODJ9.uVLp5cpb5wOyOUvFQ5fTscE7ABl4hShsT608XQBWs4I",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/student/10421003/exam-eligibility-status",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"student",
+								"10421003",
+								"exam-eligibility-status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lecturer - #student #attendance rate  - each module",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJuZ29jdGgiLCJlbWFpbCI6Im5nb2MudGhAdmd1LmVkdS52biIsInJvbGUiOiJMRUNUVVJFUiIsInVzZXJuYW1lIjoibmdvY3RoIiwiaWF0IjoxNzUwNjMzMTQ3LCJleHAiOjE3NTA2MzY3NDd9.yKC5gy5Ppa4UPSphC2qrLUSdI6t-IoQ4rmidwNDBw_0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/module-registrations/lecturer/ngocth",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"module-registrations",
+								"lecturer",
+								"ngocth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lecturer - Export exam list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJuZ29jdGgiLCJlbWFpbCI6Im5nb2MudGhAdmd1LmVkdS52biIsInJvbGUiOiJMRUNUVVJFUiIsInVzZXJuYW1lIjoibmdvY3RoIiwiaWF0IjoxNzUwNjQxODAzLCJleHAiOjE3NTA2NDU0MDN9.9cd_59OSCCl2QMd5Hpdtyzmtm6_X2JNHJL6I72Zbq44",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/attendance/exam-eligibility/export-my-modules",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"attendance",
+								"exam-eligibility",
+								"export-my-modules"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "A-FA-AC -  #attendance rate all module",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJBRE1JTjAwMSIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiQURNSU4iLCJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzUwNjM1NTYxLCJleHAiOjE3NTA2MzkxNjF9.ZDPkXl1W9q2xhei6Vo6FgCjyfN7uAGpwXYW8krvcwpY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/module-registrations/all-modules-with-attendance",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"module-registrations",
+								"all-modules-with-attendance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "A-FA-AC - Update exam list - all module",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJBRE1JTjAwMSIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiQURNSU4iLCJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzUwNjM2MTY4LCJleHAiOjE3NTA2Mzk3Njh9.1VTa6T-_FC_S_OsJf1j6A_9Xt9FubA_FGPd4gtyXvug",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:3000/api/attendance/exam-eligibility/update-all-modules",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"attendance",
+								"exam-eligibility",
+								"update-all-modules"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "A-FA-AC - Export exam list - all module",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJBRE1JTjAwMSIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiQURNSU4iLCJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzUwNjQwOTc5LCJleHAiOjE3NTA2NDQ1Nzl9.mgRjmzTcwZj1_v7PhW67fVLM8A2SLRqvgYTiYaJX9Do",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/attendance/exam-eligibility/export",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"attendance",
+								"exam-eligibility",
+								"export"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Export student list - each module",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJuZ29jdGgiLCJlbWFpbCI6Im5nb2MudGhAdmd1LmVkdS52biIsInJvbGUiOiJMRUNUVVJFUiIsInVzZXJuYW1lIjoibmdvY3RoIiwiaWF0IjoxNzUwNjQyNjM4LCJleHAiOjE3NTA2NDYyMzh9.xo1_8OLfWDpM6dmD75_k_zoZzx0J0o2XF2O4GBc574I",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"ngoc.th@vgu.edu.vn\",\r\n    \"password\":\"ngocth\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/module-registrations/export-student-list/DSA",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"module-registrations",
+								"export-student-list",
+								"DSA"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Student",
+			"item": [
+				{
+					"name": "Create Student List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJGQUMwMDEiLCJlbWFpbCI6ImZhY3VsdHkxQGV4YW1wbGUuY29tIiwicm9sZSI6IkZBQ1VMVFkiLCJ1c2VybmFtZSI6ImZhY3VsdHkxIiwiaWF0IjoxNzUxMjQyOTc3LCJleHAiOjE3NTEyNDY1Nzd9.fA0RlQ8JsqnqA4D2fSVg7HtDMwqSdL_gBGJVzN-IJfA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/lcnguyen/OneDrive - student.vgu.edu.vn/Desktop/Camwa-data/xlsx file/FA - Create Student List .xlsx"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/student/create-from-excel",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"student",
+								"create-from-excel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get student image",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIxMDQyMTAwMyIsImVtYWlsIjoiMTA0MjEwMDNAc3R1ZGVudC52Z3UuZWR1LnZuIiwicm9sZSI6IlNUVURFTlQiLCJ1c2VybmFtZSI6IjEwNDIxMDAzIiwiaWF0IjoxNzUxMTAzNTg2LCJleHAiOjE3NTExMDcxODZ9.t4-TSBrU50IKNZyVkH2LijV37rSxqFhGQokvIxTd-Xc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"attendance_id\": 7,\r\n    \"student_id\":\"10421001\",\r\n    \"module_id\":\"TCS\",\r\n    \"proposed_status\":\"present\",\r\n    \"reason\":\"I was in the class at 10 a.m\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/student/10421002/image",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"student",
+								"10421002",
+								"image"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Lecturer",
+			"item": [
+				{
+					"name": "Create Lecturer List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJGQUMwMDEiLCJlbWFpbCI6ImZhY3VsdHkxQGV4YW1wbGUuY29tIiwicm9sZSI6IkZBQ1VMVFkiLCJ1c2VybmFtZSI6ImZhY3VsdHkxIiwiaWF0IjoxNzUxMjQyOTc3LCJleHAiOjE3NTEyNDY1Nzd9.fA0RlQ8JsqnqA4D2fSVg7HtDMwqSdL_gBGJVzN-IJfA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/lcnguyen/OneDrive - student.vgu.edu.vn/Desktop/Camwa-data/xlsx file/FA - Create Lecturer List .xlsx"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/lecturer/create-from-excel",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"lecturer",
+								"create-from-excel"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Module",
+			"item": [
+				{
+					"name": "Module Registration",
+					"item": [
+						{
+							"name": "Create list student module registration",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJGQUMwMDEiLCJlbWFpbCI6ImZhY3VsdHkxQGV4YW1wbGUuY29tIiwicm9sZSI6IkZBQ1VMVFkiLCJ1c2VybmFtZSI6ImZhY3VsdHkxIiwiaWF0IjoxNzUxMjQyOTc3LCJleHAiOjE3NTEyNDY1Nzd9.fA0RlQ8JsqnqA4D2fSVg7HtDMwqSdL_gBGJVzN-IJfA",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/lcnguyen/OneDrive - student.vgu.edu.vn/Desktop/Camwa-data/xlsx file/FA - Create Modle Registration List.xlsx"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/module-registrations/create-from-excel",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"module-registrations",
+										"create-from-excel"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get module registration of student",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJGQUMwMDEiLCJlbWFpbCI6ImZhY3VsdHkxQGV4YW1wbGUuY29tIiwicm9sZSI6IkZBQ1VMVFkiLCJ1c2VybmFtZSI6ImZhY3VsdHkxIiwiaWF0IjoxNzUxMTAyOTMwLCJleHAiOjE3NTExMDY1MzB9.vexKW6nosDN6TmN1G7mEAK8G3MLDBI0QboW8pgoU1nI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/lcnguyen/OneDrive - student.vgu.edu.vn/Desktop/Camwa-data/FA - Create Modle Registration List.csv"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/module-registrations/student/10421005",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"module-registrations",
+										"student",
+										"10421005"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get registered module for lecturer",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJBRE1JTjAwMSIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiQURNSU4iLCJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzUwNDk2MTg3LCJleHAiOjE3NTA0OTk3ODd9.3V9ql4aL7ZSqj5npMckoahXZoy1eQ0vKPni8CAPAYdA",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/module-registrations/lecturer/ngocth",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"module-registrations",
+										"lecturer",
+										"ngocth"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Create module",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1IiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJBRE1JTiIsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NDk5NDgxMjksImV4cCI6MTc0OTk1MTcyOX0.-Ilagb8HxvVShUx6Mf_srPyxWAgMn8H0khoGNMnIdRk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"module_id\": \"GPA\",\r\n  \"name\": \"Theoretical of Computer Science\",\r\n  \"lecturer_id\": \"huytd\",\r\n  \"program_id\": \"CSE\",\r\n  \"intake\": \"2021\",\r\n  \"semester_id\": \"WS2025\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/module/create",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"module",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update module",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1IiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJBRE1JTiIsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NDk5NDgxMjksImV4cCI6MTc0OTk1MTcyOX0.-Ilagb8HxvVShUx6Mf_srPyxWAgMn8H0khoGNMnIdRk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Theoretical of Computer Science 1\",\r\n  \"lecturer_id\": \"huytd\",\r\n  \"program_id\": \"CSE\",\r\n  \"intake\": \"20211\",\r\n  \"semester_id\": \"WS2025\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/module/update/TCS",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"module",
+								"update",
+								"TCS"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create module list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJGQUMwMDEiLCJlbWFpbCI6ImZhY3VsdHkxQGV4YW1wbGUuY29tIiwicm9sZSI6IkZBQ1VMVFkiLCJ1c2VybmFtZSI6ImZhY3VsdHkxIiwiaWF0IjoxNzUxMjQyOTc3LCJleHAiOjE3NTEyNDY1Nzd9.fA0RlQ8JsqnqA4D2fSVg7HtDMwqSdL_gBGJVzN-IJfA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/lcnguyen/OneDrive - student.vgu.edu.vn/Desktop/Camwa-data/xlsx file/FA - Create Module List.xlsx"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/module/create-from-excel",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"module",
+								"create-from-excel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete module",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1IiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJBRE1JTiIsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NDk5NDgxMjksImV4cCI6MTc0OTk1MTcyOX0.-Ilagb8HxvVShUx6Mf_srPyxWAgMn8H0khoGNMnIdRk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Theoretical of Computer Science\",\r\n  \"lecturer_id\": \"huytd\",\r\n  \"program_id\": \"CSE\",\r\n  \"intake\": \"2021\",\r\n  \"semester_id\": \"WS2025\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/module/delete/GPA",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"module",
+								"delete",
+								"GPA"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "A - Get module camera path",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJGQUMwMDEiLCJlbWFpbCI6ImZhY3VsdHkxQGV4YW1wbGUuY29tIiwicm9sZSI6IkZBQ1VMVFkiLCJ1c2VybmFtZSI6ImZhY3VsdHkxIiwiaWF0IjoxNzUxMTkxODg5LCJleHAiOjE3NTExOTU0ODl9.bWf4nIc8V9H_0szhUp8qQu3DrY6-_zn9NBDPAa5Jf2Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/lcnguyen/OneDrive - student.vgu.edu.vn/Desktop/Camwa-data/Admin - Create Module List.csv"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/module/camera-path/TCS",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"module",
+								"camera-path",
+								"TCS"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "A - Set module camera path",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJBRE1JTjAwMSIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiQURNSU4iLCJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzUxMTkzMTU0LCJleHAiOjE3NTExOTY3NTR9.WXCGJ4neJ-4_OShX6nh-hxT2OlJTdGFtOUWWiKXdexo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"camera_path\":\"1.mp4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/module/set-camera-path/TCS",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"module",
+								"set-camera-path",
+								"TCS"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "[Admin] Program/ Intake/ Semester",
+			"item": [
+				{
+					"name": "Create program",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJBRE1JTjAwMSIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiQURNSU4iLCJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzUwMDMzNDU2LCJleHAiOjE3NTAwMzcwNTZ9.jLAAmDT9l2pmhnDPlMCaoGKcqYlz5SfsrDmm_6jmfQA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"program_id\":\"CSE\",\r\n    \"name\":\"Computer Science\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/program",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"program"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create semester",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJBRE1JTjAwMSIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiQURNSU4iLCJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzUwMDMzNDU2LCJleHAiOjE3NTAwMzcwNTZ9.jLAAmDT9l2pmhnDPlMCaoGKcqYlz5SfsrDmm_6jmfQA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"sem_id\":\"WS2025\",\r\n    \"start_date\":\"2023-09-01 07:00:00+07\",\r\n    \"end_date\":\"2023-09-01 07:00:00+07\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/semester",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"semester"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create intake",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJBRE1JTjAwMSIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiQURNSU4iLCJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzUwMDMzNDU2LCJleHAiOjE3NTAwMzcwNTZ9.jLAAmDT9l2pmhnDPlMCaoGKcqYlz5SfsrDmm_6jmfQA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"year\":2021\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/intake",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"intake"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Exam",
+			"item": [
+				{
+					"name": "Calculate eligible exam for a module",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJBRE1JTjAwMSIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiQURNSU4iLCJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzUwNDc3MTcxLCJleHAiOjE3NTA0ODA3NzF9.-TiR59X6QCj4bcmNf6rabsE6KRV69h6M1rd_Y5kNIhQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:3000/api/attendance/exam-eligibility/module/DSA",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"attendance",
+								"exam-eligibility",
+								"module",
+								"DSA"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
