@@ -25,3 +25,7 @@ class ModuleUpdate(BaseModel):
     intake: Optional[int] = None
     semester_id: Optional[str] = None
     camera_path: Optional[str] = None
+
+
+class CameraPathUpdate(BaseModel):
+    camera_path: str

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from typing import Optional
 
 from pydantic import BaseModel
@@ -11,8 +11,10 @@ class SemesterResponse(BaseModel):
     model_config = {"from_attributes": True}
 
 
-class SemesterCreate(SemesterResponse):
-    pass
+class SemesterCreate(BaseModel):
+    sem_id: Optional[str] = None
+    start_date: Optional[date] = None
+    end_date: Optional[date] = None
 
 
 class SemesterUpdate(BaseModel):

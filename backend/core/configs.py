@@ -13,21 +13,27 @@ class Settings(BaseSettings):
         extra='ignore',
     )
 
-    JWT_SECRET_KEY: str = "C6kHOMvR3kRXNhDAGTT71NQGDhj6Y0920RrLgLIswmd"
-    JWT_REFRESH_SECRET_KEY: str = "C6kfsdvR3kRXNhDAeff71NQGDhj6Y0920RrLgLIswmd"
+    DATABASE_URL: str
+    DB_ECHO: bool = True
+    DB_POOL_SIZE: int = 20
+    DB_MAX_OVERFLOW: int = 10
+    DB_POOL_RECYCLE: int = 3600
+
+    JWT_SECRET_KEY: str = ""
+    JWT_REFRESH_SECRET_KEY: str = ""
     ALGORITHM: str = 'HS256'
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
-    MAIL_USERNAME: str = "dangkhoa11102001@gmail.com"
-    MAIL_PASSWORD: str = "zwbs febd zoaz texw"
-    MAIL_FROM: str = "dangkhoa11102001@gmail.com"
+    MAIL_USERNAME: str = ""
+    MAIL_PASSWORD: str = ""
+    MAIL_FROM: str = ""
     MAIL_PORT: int = 587
-    MAIL_SERVER: str = "smtp.gmail.com"
-    MAIL_STARTTLS: bool = True
-    MAIL_SSL_TLS: bool = False
-    USE_CREDENTIALS: bool = True
-
+    MAIL_SERVER: str = ""
+    MAIL_STARTTLS: bool
+    MAIL_SSL_TLS: bool
+    USE_CREDENTIALS: bool
+    EMAIL_RETRY_ATTEMPTS: int
 
 
 

@@ -19,9 +19,3 @@ class ImageAsset(Base):
 
     # Relationships
     iam: Mapped["Iam"] = relationship(back_populates="image_assets")
-
-# @event.listens_for(ImageAsset, "before_insert")
-# @event.listens_for(ImageAsset, "before_update")
-# def set_default_image_path(mapper, connection, target):
-#     if not target.image_path:
-#         target.image_path = f"image_assets/{target.username}"

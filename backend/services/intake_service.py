@@ -8,6 +8,11 @@ from backend.schemas.intake import IntakeCreate, IntakeResponse, IntakeUpdate
 
 
 async def create_intake(session: AsyncSession, data: IntakeCreate) -> IntakeResponse:
+
+    existing = await session.get(Intake, data.year)
+    if existing:
+        raise HTTPException(status_code=409, detail="Intake already exists")
+
     intake = Intake(
         year=data.year,
     )
@@ -31,6 +36,12 @@ async def find_intake_by_year(session: AsyncSession, year: int) -> IntakeRespons
 
 
 async def update_intake(session: AsyncSession, year: int, data: IntakeUpdate) -> IntakeResponse:
+
+    if data.year != year:
+        existing = await session.get(Intake, data.year)
+        if existing:
+            raise HTTPException(status_code=409, detail="Target intake year already exists")
+    
     intake = await session.get(Intake, year)
     if not intake:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Intake not found")

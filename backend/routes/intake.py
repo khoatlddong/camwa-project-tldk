@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from backend.core.db import AsyncSessionDep
+from backend.core.deps import AdminOnly
 from backend.helpers.response_wrapper import ApiResponse
 from backend.schemas.intake import IntakeResponse, IntakeCreate, IntakeUpdate
 from backend.services import intake_service
@@ -11,7 +12,11 @@ router = APIRouter(
 )
 
 @router.post("/", response_model=ApiResponse[IntakeResponse], status_code=201)
-async def create_intake(session: AsyncSessionDep, data: IntakeCreate):
+async def create_intake(
+        session: AsyncSessionDep,
+        data: IntakeCreate,
+        _: AdminOnly = None
+):
     intake = await intake_service.create_intake(session, data)
     return ApiResponse(
         message="Intake created successfully",
@@ -37,19 +42,28 @@ async def get_intake_by_year(session: AsyncSessionDep, year: int):
     )
 
 
-@router.delete("/{year}", response_model=ApiResponse[None])
-async def delete_intake(session: AsyncSessionDep, year: int):
-    await intake_service.delete_intake(session, year)
-    return ApiResponse(
-        message="Intake deleted successfully",
-        meta_data=None
-    )
-
-
 @router.put("/{year}", response_model=ApiResponse[IntakeResponse])
-async def update_intake(session: AsyncSessionDep, year: int, data: IntakeUpdate):
+async def update_intake(
+        session: AsyncSessionDep,
+        year: int,
+        data: IntakeUpdate,
+        _: AdminOnly = None
+):
     intake = await intake_service.update_intake(session, year, data)
     return ApiResponse(
         message="Intake updated successfully",
         meta_data=intake
+    )
+
+
+@router.delete("/{year}", response_model=ApiResponse[None])
+async def delete_intake(
+        session: AsyncSessionDep,
+        year: int,
+        _: AdminOnly = None
+):
+    await intake_service.delete_intake(session, year)
+    return ApiResponse(
+        message="Intake deleted successfully",
+        meta_data=None
     )

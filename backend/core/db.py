@@ -4,18 +4,15 @@ from fastapi import Depends
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlalchemy.orm import DeclarativeBase
 
-
-
-DATABASE_URL="postgresql+asyncpg://postgres:root@localhost:5432/camwa"
-
+from backend.core.configs import settings
 
 engine = create_async_engine(
-    DATABASE_URL,
-    echo=True,
-    pool_pre_ping=True,
-    pool_size=20,
-    max_overflow=10,
-    pool_recycle=3600,
+    settings.DATABASE_URL,
+    echo = settings.DB_ECHO,
+    pool_pre_ping = True,
+    pool_size = settings.DB_POOL_SIZE,
+    max_overflow = settings.DB_MAX_OVERFLOW,
+    pool_recycle = settings.DB_POOL_RECYCLE,
 )
 
 AsyncSessionLocal = async_sessionmaker(

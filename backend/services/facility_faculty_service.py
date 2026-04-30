@@ -1,19 +1,39 @@
 from fastapi import HTTPException, status
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.models import FacilityFaculty
+from backend.models import FacilityFaculty, Program
 from backend.schemas.facility_faculty import FacilityFacultyResponse, FacilityFacultyCreate, FacilityFacultyUpdate
 
 
 async def create_facility_faculty(session: AsyncSession, data: FacilityFacultyCreate) -> FacilityFacultyResponse:
+    existing = await session.get(FacilityFaculty, data.staff_id)
+    if existing:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Facility Faculty already exists",
+        )
+    program = await session.get(Program, data.program_id)
+    if not program:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Program not found",
+        )
+
     new_facility_faculty = FacilityFaculty(
         staff_id=data.staff_id,
         name=data.name,
         program_id=data.program_id,
     )
-    session.add(new_facility_faculty)
-    await session.commit()
+    try:
+        await session.commit()
+    except IntegrityError:
+        await session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Could not create Facility Faculty due to duplicate or invalid data",
+        )
     await session.refresh(new_facility_faculty)
     return FacilityFacultyResponse.model_validate(new_facility_faculty)
 
@@ -46,9 +66,24 @@ async def update_facility_faculty(session: AsyncSession, staff_id: str, data: Fa
 
     update_data = data.model_dump(exclude_unset=True)
 
+    if "program_id" in update_data:
+        program = await session.get(Program, update_data["program_id"])
+        if not program:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Program not found",
+            )
+
     for field, value in update_data.items():
         setattr(faculty, field, value)
 
-    await session.commit()
+    try:
+        await session.commit()
+    except IntegrityError:
+        await session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Could not update Facility Faculty due to invalid data",
+        )
     await session.refresh(faculty)
     return FacilityFacultyResponse.model_validate(faculty)

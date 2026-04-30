@@ -1,7 +1,6 @@
 from backend.models.academic_coordinator import AcademicCoordinator
 from backend.models.attendance import Attendance
 from backend.models.attendance_request import AttendanceRequest
-from backend.models.audit_log import AuditLog
 from backend.models.exam import Exam
 from backend.models.facility_faculty import FacilityFaculty
 from backend.models.iam import Iam
@@ -31,5 +30,4 @@ __all__ = [
     "FacilityFaculty",
     "ImageAsset",
     "Notification",
-    "AuditLog",
 ]

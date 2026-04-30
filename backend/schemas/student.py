@@ -21,3 +21,7 @@ class StudentUpdate(BaseModel):
     map_location: Optional[str] = None
     program_id: Optional[str] = None
     intake: Optional[int] = None
+
+
+class StudentImageCreate(BaseModel):
+    image_path: Optional[str] = None

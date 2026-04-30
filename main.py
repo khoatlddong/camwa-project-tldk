@@ -3,13 +3,9 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from backend.core.db import engine, init_db
-from backend.routes import auth, account, excel, intake, semester, student, program, module, module_registration, \
+from backend.routes import auth, account, intake, semester, student, program, module, module_registration, \
     lecturer, facility_faculty, dashboard, notification, attendance
 
-# from backend.helpers.exception_handler import register_exception_handlers
-# from backend.routes import account_router, intake_router, semester_router, facility_faculty_router, program_router, \
-#     lecturer_router, student_router, module_router, module_registration_router, attendance_router, notification_router, \
-#     dashboard_router
 
 app = FastAPI()
 

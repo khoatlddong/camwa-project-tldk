@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel
 
@@ -14,8 +14,10 @@ class ModuleRegistrationResponse(BaseModel):
     model_config = {"from_attributes": True}
 
 
-class ModuleRegistrationCreate(ModuleRegistrationResponse):
-    pass
+class ModuleRegistrationCreate(BaseModel):
+    student_id: str
+    module_id: str
+    lecturer_id: str
 
 
 class ModuleRegistrationUpdate(BaseModel):
@@ -23,3 +25,21 @@ class ModuleRegistrationUpdate(BaseModel):
     module_id: Optional[str] = None
     lecturer_id: Optional[str] = None
 
+
+class LecturerModuleStudentAttendanceItem(BaseModel):
+    student_id: str
+    student_name: str
+    attendance_rate: float
+    total_classes: int
+    attended_classes: int
+
+
+class LecturerModuleStudentsAttendance(BaseModel):
+    module_id: str
+    module_name: str
+    students: List[LecturerModuleStudentAttendanceItem]
+
+
+class LecturerStudentsAttendanceResponse(BaseModel):
+    lecturer_id: str
+    modules: List[LecturerModuleStudentsAttendance]

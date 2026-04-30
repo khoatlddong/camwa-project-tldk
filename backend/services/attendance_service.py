@@ -1,13 +1,14 @@
 import io
 import os
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import Dict, Optional, List, Any
+from pathlib import Path
 
-from fastapi import HTTPException, status, BackgroundTasks, logger, Path
+from fastapi import HTTPException, status, BackgroundTasks, logger
 from openpyxl.reader.excel import load_workbook
 from openpyxl.styles import PatternFill, Font
 from openpyxl.workbook import Workbook
-from sqlalchemy import select, insert, distinct
+from sqlalchemy import select, distinct
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.models import Attendance, ModuleRegistration, AttendanceRequest, Student, Iam, Exam, Module, Lecturer
@@ -17,10 +18,15 @@ from backend.schemas.attendance import AttendanceResponse, AttendanceCreate, Att
 from backend.services.email_service import send_attendance_request_confirmation, send_attendance_correction_notification
 from backend.services.notification_service import create_new_request_notification, create_request_processed_notification
 
+import logging
+logger = logging.getLogger(__name__)
+
 PRESENT_STATUSES = {AttendanceStatus.PRESENT, AttendanceStatus.LATE, AttendanceStatus.EXCUSED}
 ELIGIBILITY_THRESHOLD = 80.0
 EXPORT_DIR_NAME = "eligibility for exam"
 
+
+'''CRUD for Attendance and AttendanceRequest'''
 
 async def get_attendance_by_id(session: AsyncSession, attendance_id: int) -> AttendanceResponse:
     result = await session.execute(select(Attendance).where(Attendance.attendance_id == attendance_id))
@@ -76,6 +82,7 @@ async def delete_attendance(session: AsyncSession, attendance_id: int) -> None:
     if not att:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Attendance not found")
     await session.delete(att)
+    await session.commit()
 
 
 async def view_attendance_requests_by_module(
@@ -136,7 +143,7 @@ async def get_request_by_status(
     rows = (await session.execute(stmt)).scalars().all()
     return [AttendanceRequestResponse.model_validate(r) for r in rows]
 
-
+'''Email helper'''
 
 async def _get_student_email(session: AsyncSession, student_id: str):
     result = await session.execute(select(Iam.email).where(Iam.iam_id == student_id))
@@ -145,6 +152,7 @@ async def _get_student_email(session: AsyncSession, student_id: str):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Student not found")
     return email or ""
 
+'''Request Correction and Handle Correction'''
 
 async def request_correction(
     session: AsyncSession,
@@ -292,9 +300,7 @@ async def handle_correction(
     }
 
 
-# --------------------------------------------------------------------------- #
-# Attendance rate / exam eligibility
-# --------------------------------------------------------------------------- #
+'''Attendance Rate and Exam Eligility'''
 
 
 async def calculate_attendance_rate(
@@ -348,24 +354,53 @@ async def check_exam_eligibility(
 
 
 async def update_eligibility_for_module(session: AsyncSession, module_id: str):
-    reg_stmt = select(ModuleRegistration).where(ModuleRegistration.module_id == module_id)
+    reg_stmt = select(ModuleRegistration).where(
+        ModuleRegistration.module_id == module_id
+    )
     registrations = (await session.execute(reg_stmt)).scalars().all()
+
+    if not registrations:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No students registered for module {module_id}",
+        )
+
     results = []
+
     for reg in registrations:
         rate = await calculate_attendance_rate(session, reg.student_id, module_id)
-        is_eligible = rate >= 80.0
+        is_eligible = rate >= ELIGIBILITY_THRESHOLD
 
-        exam = await session.get(Exam, {"student_id": reg.student_id, "module_id": module_id})
+        exam_stmt = select(Exam).where(
+            Exam.student_id == reg.student_id,
+            Exam.module_id == module_id,
+        )
+        exam = (await session.execute(exam_stmt)).scalars().first()
+
         if exam:
             exam.attendance_rate = rate
             exam.is_eligible = is_eligible
         else:
-            exam = Exam(student_id=reg.student_id, module_id=module_id, attendance_rate=rate, is_eligible=is_eligible)
+            exam = Exam(
+                student_id=reg.student_id,
+                module_id=module_id,
+                attendance_rate=rate,
+                is_eligible=is_eligible,
+            )
             session.add(exam)
-        results.append({"student_id": reg.student_id, "rate": rate, "is_eligible": is_eligible})
+
+        results.append({
+            "student_id": reg.student_id,
+            "module_id": module_id,
+            "attendance_rate": rate,
+            "is_eligible": is_eligible,
+            "exam_record": exam,
+        })
+
     await session.commit()
     return results
 
+'''Module helper'''
 
 def _summarise_module_results(
     module_id: str, module_results: List[Dict[str, Any]]
@@ -427,7 +462,8 @@ async def update_exam_eligibility_for_all_modules(
             success_count += summary["students_success"]
             failure_count += summary["students_failed"]
             all_results.append(summary)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
+            await session.rollback()
             logger.exception("Error processing module %s", module_id)
             all_results.append(
                 {
@@ -473,10 +509,9 @@ async def update_exam_eligibility_for_lecturer_modules(
             success_count += summary["students_success"]
             failure_count += summary["students_failed"]
             all_results.append(summary)
-        except Exception as exc:  # noqa: BLE001
-            logger.exception(
-                "Error processing module %s for lecturer %s", module_id, lecturer_id
-            )
+        except Exception as exc:
+            await session.rollback()
+            logger.exception("Error processing module %s", module_id)
             all_results.append(
                 {
                     "module_id": module_id,
@@ -510,41 +545,56 @@ async def get_exam_eligibility_by_student(
     return (await session.execute(stmt)).scalars().all()
 
 
-# --------------------------------------------------------------------------- #
-# Excel import / export
-# --------------------------------------------------------------------------- #
+'''Excel Import and Export'''
 
 async def import_attendance_from_excel(session: AsyncSession, file_bytes: bytes):
     wb = load_workbook(io.BytesIO(file_bytes), read_only=True, data_only=True)
     ws = wb.active
-
     successful = []
     failed = []
-
-    for row in ws.iter_rows(min_row=2, values_only=True):
-        if not row or not row[0] or not row[1]:
+    for row_index, row in enumerate(ws.iter_rows(min_row=2, values_only=True), start=2):
+        student_id = str(row[0]).strip() if len(row) > 0 and row[0] else None
+        module_id = str(row[1]).strip() if len(row) > 1 and row[1] else None
+        status_value = str(row[3]).strip() if len(row) > 3 and row[3] else None
+        if not student_id or not module_id or not status_value:
+            failed.append({"row": row_index, "error": "Missing required fields"})
             continue
-        student_id = str(row[0]).strip()
-        module_id = str(row[1]).strip()
-        status = str(row[2]).strip()
-
+        normalized_status = status_value.upper()
+        try:
+            attendance_status = AttendanceStatus(normalized_status)
+        except ValueError:
+            failed.append({
+                "row": row_index,
+                "student_id": student_id,
+                "module_id": module_id,
+                "error": f"Invalid attendance status: {status_value}. Must be PRESENT, ABSENT, LATE, or EXCUSED",
+            })
+            continue
         reg_stmt = select(ModuleRegistration).where(
             ModuleRegistration.student_id == student_id,
-            ModuleRegistration.module_id == module_id
+            ModuleRegistration.module_id == module_id,
         )
         if not (await session.execute(reg_stmt)).scalars().first():
-            failed.append({"error": "Student not registered"})
+            failed.append({
+                "row": row_index,
+                "student_id": student_id,
+                "module_id": module_id,
+                "error": "Student not registered",
+            })
             continue
-
-
         new_attendance = Attendance(
             student_id=student_id,
             module_id=module_id,
-            attendance_status=status,
+            attendance_status=attendance_status,
         )
         session.add(new_attendance)
-        successful.append({"student_id": student_id, "module_id": module_id, "status": status})
-
+        await session.flush()
+        successful.append({
+            "attendance_id": new_attendance.attendance_id,
+            "student_id": student_id,
+            "module_id": module_id,
+            "attendance_status": attendance_status.value,
+        })
     await session.commit()
     return {"successful": successful, "failed": failed}
 
@@ -553,8 +603,10 @@ status_colors = {
             "PRESENT": PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid"),
             "ABSENT": PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid"),
             "LATE": PatternFill(start_color="FFEB9C", end_color="FFEB9C", fill_type="solid"),
-            "EXCUSED": PatternFill(start_color="DDEBF7", end_color="DDEBF7", fill_type="solid")
-        }
+            "EXCUSED": PatternFill(start_color="DDEBF7", end_color="DDEBF7", fill_type="solid"),
+            "ELIGIBLE": PatternFill(start_color="90EE90", end_color="90EE90", fill_type="solid"),
+            "INELIGIBLE": PatternFill(start_color="FFCCCB", end_color="FFCCCB", fill_type="solid")
+    }
 
 
 
@@ -660,7 +712,7 @@ async def _build_module_eligibility_workbook(
                 "lecturer_id": lecturer.lecturer_id,
                 "student_id": student.student_id,
                 "student_name": student.name,
-                "attendance_rate": f"{float(entry['attendance_rate']):.2f}%",
+                "attendance_rate": f"{float(entry.get('attendance_rate', entry.get('rate', 0))):.2f}%",
                 "is_eligible": "YES" if entry.get("is_eligible") else "NO",
             }
         )
@@ -785,7 +837,7 @@ async def export_exam_eligibility_for_lecturer_to_excel(
                     "errors": 0,
                 }
             )
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             logger.exception(
                 "Error exporting module %s for lecturer %s", module_id, lecturer_id
             )

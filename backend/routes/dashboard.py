@@ -13,7 +13,10 @@ router = APIRouter(
 
 
 @router.get("/stats", response_model=ApiResponse[DashboardStats])
-async def dashboard_stats(session: AsyncSessionDep, _: AdminOnly = None):
+async def dashboard_stats(
+        session: AsyncSessionDep,
+        _: AdminOnly = None
+):
     stats = await dashboard_service.get_dashboard_stats(session)
     return ApiResponse(
         message="Dashboard stats retrieved successfully",

@@ -19,7 +19,7 @@ async def login(db: AsyncSession, email: str, password: str) -> dict:
         raise HTTPException(status_code=404, detail="User not found")
 
     if user.locked_until and user.locked_until > datetime.now():
-        raise HTTPException(status_code=429, detail=f"Account is locked until {user.locked_until.isoformat()}")
+        raise HTTPException(status_code=401, detail=f"Too many failed login attempts. Your account is locked until {user.locked_until.isoformat()}")
 
     if not verify_password(password, user.password):
         user.failed_attempts += 1
@@ -101,12 +101,11 @@ async def refresh_access_token(db: AsyncSession, refresh_token: str) -> dict:
     return {"access_token": new_access}
 
 
-async def logout(db: AsyncSession, user_id: str) -> dict:
+async def logout(db: AsyncSession, user_id: str) -> None:
     await db.execute(
         update(Iam).where(Iam.iam_id == user_id).values(token_version = Iam.token_version + 1, refresh_token = None)
     )
     await db.commit()
-    return {"message": "Logged out successfully"}
 
 
 async def toggle_ac_role(db: AsyncSession, user_id: str) -> dict:
@@ -125,7 +124,7 @@ async def toggle_ac_role(db: AsyncSession, user_id: str) -> dict:
     if not ac:
         raise HTTPException(status_code=404, detail="Academic Coordinator not found")
 
-    new_role = "LECTURER" if ac.current_tole == "AC" else "AC"
+    new_role = "LECTURER" if ac.current_role == "AC" else "AC"
     ac.current_role = new_role
 
     await db.execute(

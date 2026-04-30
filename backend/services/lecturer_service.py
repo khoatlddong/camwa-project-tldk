@@ -4,20 +4,42 @@ from typing import List
 import openpyxl
 from fastapi import HTTPException, status
 from sqlalchemy import select, or_
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.models import Lecturer
+from backend.models import Lecturer, Program
 from backend.schemas.lecturer import LecturerCreate, LecturerResponse, LecturerUpdate
 
 
 async def create_lecturer(session: AsyncSession, data: LecturerCreate) -> LecturerResponse:
+
+    existing = await session.get(Lecturer, data.lecturer_id)
+    if existing:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Lecturer already exists",
+        )
+    program = await session.get(Program, data.program_id)
+    if not program:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Program not found",
+        )
+
     new_lecturer = Lecturer(
         lecturer_id=data.lecturer_id,
         name=data.name,
         program_id=data.program_id,
     )
     session.add(new_lecturer)
-    await session.commit()
+    try:
+        await session.commit()
+    except IntegrityError:
+        await session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Could not create lecturer due to duplicate or invalid data",
+        )
     await session.refresh(new_lecturer)
     return LecturerResponse.model_validate(new_lecturer)
 
@@ -50,10 +72,25 @@ async def update_lecturer(session: AsyncSession, lecturer_id: str, lecturer_upda
 
     update_data = lecturer_update.model_dump(exclude_unset=True)
 
+    if "program_id" in update_data:
+        program = await session.get(Program, update_data["program_id"])
+        if not program:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Program not found",
+            )
+
     for field, value in update_data.items():
         setattr(lecturer, field, value)
 
-    await session.commit()
+    try:
+        await session.commit()
+    except IntegrityError:
+        await session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Could not update lecturer due to invalid data",
+        )
     await session.refresh(lecturer)
     return LecturerResponse.model_validate(lecturer)
 
@@ -65,19 +102,42 @@ async def _process_excel(session: AsyncSession, file_contents: bytes):
     successful = []
     failed = []
 
-    for row in sheet.iter_rows(min_row=2, values_only=True):
-        if not row or not row[0] or not row[1]:
+    for row_index, row in enumerate(sheet.iter_rows(min_row=2, values_only=True), start=2):
+        lecturer_id = str(row[0]).strip() if len(row) > 0 and row[0] else None
+        name = str(row[2]).strip() if len(row) > 2 and row[2] else None
+        program_id = str(row[3]).strip() if len(row) > 3 and row[3] else None
+
+        if not lecturer_id or not name or not program_id:
+            failed.append({
+                "row": row_index,
+                "lecturer_id": lecturer_id,
+                "name": name,
+                "program_id": program_id,
+                "error": "Missing required fields",
+            })
             continue
-        lecturer_id = str(row[0]).strip()
-        name = str(row[1]).strip()
-        program_id = str(row[2]).strip() if len(row) > 2 and row[2] else lecturer_id
 
         # Check duplicates
-        existing = await session.execute(
-            select(Lecturer).where(or_(Lecturer.lecturer_id == lecturer_id, Lecturer.name == name))
-        )
-        if existing.scalar():
-            failed.append({"lecturer_id": lecturer_id, "name": name, "error": "User already exists"})
+        existing = await session.get(Lecturer, lecturer_id)
+        if existing:
+            failed.append({
+                "row": row_index,
+                "lecturer_id": lecturer_id,
+                "name": name,
+                "program_id": program_id,
+                "error": "Lecturer already exists",
+            })
+            continue
+
+        program = await session.get(Program, program_id)
+        if not program:
+            failed.append({
+                "row": row_index,
+                "lecturer_id": lecturer_id,
+                "name": name,
+                "program_id": program_id,
+                "error": "Program not found",
+            })
             continue
 
         new_lecturer = Lecturer(
@@ -86,9 +146,20 @@ async def _process_excel(session: AsyncSession, file_contents: bytes):
             program_id=program_id,
         )
         session.add(new_lecturer)
-        successful.append({"lecture_id": lecturer_id, "name": name, "program_id": program_id})
+        successful.append({
+            "lecturer_id": lecturer_id,
+            "name": name,
+            "program_id": program_id
+        })
 
-    await session.commit()
+    try:
+        await session.commit()
+    except IntegrityError as exc:
+        await session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Could not import lecturers: {exc.orig}",
+        )
     return {"successful": successful, "failed": failed}
 
 

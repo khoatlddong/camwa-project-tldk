@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -62,40 +64,55 @@ async def get_notification_by_user(session: AsyncSession, receiver_id: str, stat
     return [NotificationResponse.model_validate(notification) for notification in notifications]
 
 
-async def mark_notification_as_read(session: AsyncSession, notification_id: int, receiver_id: str) -> NotificationResponse:
+async def mark_notification_as_read(
+    session: AsyncSession,
+    notification_id: int,
+    receiver_id: str,
+) -> NotificationResponse:
     row = await session.get(Notification, notification_id)
-    if not row:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Notification not found")
-    if row.receiver_id != receiver_id:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="You are not authorized to mark this notification as read")
-    row.status = NotificationStatus.READ
-    await session.commit()
+    if not row or row.receiver_id != receiver_id:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Notification not found",
+        )
+    if row.status != NotificationStatus.READ:
+        row.status = NotificationStatus.READ
+        row.read_at = datetime.now()
+        await session.commit()
+        await session.refresh(row)
     return NotificationResponse.model_validate(row)
 
 
-async def mark_all_notifications_as_read(session: AsyncSession, receiver_id: str):
+async def mark_all_notifications_as_read(
+    session: AsyncSession,
+    receiver_id: str,
+) -> dict:
     result = await session.execute(
         select(Notification).where(
             Notification.receiver_id == receiver_id,
-            Notification.status == NotificationStatus.UNREAD
+            Notification.status == NotificationStatus.UNREAD,
         )
     )
     rows = result.scalars().all()
+    now = datetime.now()
     for row in rows:
         row.status = NotificationStatus.READ
+        row.read_at = now
     await session.commit()
-    return len(rows)
+    return {"count": len(rows)}
 
 
-async def get_unread_notifications_count(session: AsyncSession, receiver_id: str):
+async def get_unread_notifications_count(
+    session: AsyncSession,
+    receiver_id: str,
+) -> dict:
     result = await session.execute(
         select(Notification.notification_id).where(
             Notification.receiver_id == receiver_id,
-            Notification.status == NotificationStatus.UNREAD
+            Notification.status == NotificationStatus.UNREAD,
         )
     )
-    rows = result.scalars().all()
-    return len(rows)
+    return {"count": len(result.scalars().all())}
 
 
 async def delete_notification(session: AsyncSession, notification_id: int, receiver_id: str):

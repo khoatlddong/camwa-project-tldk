@@ -65,7 +65,11 @@ def require_role(allowed_roles: List[str]):
 
 AdminOnly = Annotated[Iam, Depends(require_role(["ADMIN"]))]
 AdminOrFA = Annotated[Iam, Depends(require_role(["ADMIN", "FA"]))]
-LecturerOrAC = Annotated[Iam, Depends(require_role(["LECTURER", "AC"]))]
+AdminOrFAOrAC = Annotated[Iam, Depends(require_role(["ADMIN", "FA", "AC"]))]
+AdminOrFAOrLecturer = Annotated[Iam, Depends(require_role(["ADMIN", "FA", "LECTURER"]))]
+AdminOrFAOrLecturerOrAC = Annotated[Iam, Depends(require_role(["ADMIN", "FA", "LECTURER", "AC"]))]
+LecturerOnly = Annotated[Iam, Depends(require_role(["LECTURER"]))]
+StudentOnly = Annotated[Iam, Depends(require_role(["STUDENT"]))]
 AllAuthenticated = Annotated[Iam, Depends(require_role(["ADMIN", "FA", "LECTURER", "STUDENT", "AC"]))]
 
 CurrentUser = Annotated[Iam, Depends(get_current_user)]
